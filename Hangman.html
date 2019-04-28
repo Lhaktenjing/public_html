@@ -1,0 +1,99 @@
+<html>
+  <head>
+    <title>HANGMAN-GAME | LHAKPA SHERPA</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Sherpa" />
+    <link href='https://fonts.googleapis.com/css?family=Barrio' rel='stylesheet'>
+    <style>
+
+    body {
+      font-family: 'Barrio';
+      width: 75%;
+      text-align: center;
+      background: #EBAA6B;
+    }
+
+    #Intro{
+      font-size: 30px;
+    }
+
+    </style>
+
+  </head>
+  <body onload = "firstTime()">
+    <div id = "Intro">
+    <h1>
+      The Hangman Game
+    </h1>
+    <h2>
+      by Lhakpa Sherpa
+    </h2>
+   Your Guess: <input type="text" name="guessLetter" id="Letter" value=""><br>
+   <button onclick="processGuess()"> Guess</button>
+   </div>
+    <br>
+    <h2 id="rightWord"> hi </h2>
+    <br>
+    <h3 id = "guessedWord"> </h3>
+  </body>
+
+  <script>
+  var wordbank = [
+    "javascript",
+    "STARBUCKS",
+    "SEATTLE",
+    "EINSTEIN",
+    "EVEREST",
+    "SUMMER"];
+  var hint = [
+    "A programming Language",
+    "Seattle is all about..",
+    "Most famous city in PNW",
+    "E = MC^2",
+    "8848m",
+    "College Student's favourite time"];
+    function firstTime(){
+      index = Math.floor(Math.random() * 5);
+      rightWord = wordbank[index];
+      hintWord = hint[index];
+      temp = "";
+      for(i in rightWord)
+      {
+        temp += "-";
+      }
+      printWord = String(temp);
+      document.getElementById("rightWord").innerHTML = String(printWord);
+    }
+
+  function processGuess(){
+    var guessLetter = document.getElementById("Letter").value;
+    String(guessLetter).replace(/\s/g, "");
+    var letters = /^[A-Za-z]+$/;
+    if (String(guessLetter).length === 1 && String(guessLetter).match(letters)){
+      if (String(rightWord).includes(String(guessLetter)))
+      {
+        document.getElementById("rightWord").innerHTML = String(printWord);
+
+        for (i in rightWord)
+        {
+          if(rightWord[i] == String(guessLetter))
+          {
+            printWord[i] = String(guessLetter);
+            document.getElementById("rightWord").innerHTML = String(printWord);
+          }
+        }
+      }
+      else {
+
+      }
+    }
+    else {
+          window.alert("Please Input a Letter a-z");
+          document.getElementById("Letter").value = "";
+    }
+
+
+
+}
+  </script>
+</html>
