@@ -1,3 +1,4 @@
+<!DOCTYPE = html>
 <html>
   <head>
     <title>HANGMAN-GAME | LHAKPA SHERPA</title>
@@ -8,7 +9,6 @@
 
     body {
       font-family: 'Barrio';
-      width: 75%;
       text-align: center;
       background: #EBAA6B;
     }
@@ -30,16 +30,21 @@
     </h2>
    Your Guess: <input type="text" name="guessLetter" id="Letter" value=""><br>
    <button onclick="processGuess()"> Guess</button>
+   <button onclick="giveHint()"> Hint</button>
    </div>
-    <br>
-    <h2 id="rightWord"> hi </h2>
+   <h4 id = "hint"> </h4>
+    <h2 id="printToScreen"></h2>
     <br>
     <h3 id = "guessedWord"> </h3>
+    <h4 id = "Lives"> </h4>
+    <h1 id="win"></h1>
   </body>
 
   <script>
+  Lives = 7;
+  printWord = "..";
   var wordbank = [
-    "javascript",
+    "JAVASCRIPT",
     "STARBUCKS",
     "SEATTLE",
     "EINSTEIN",
@@ -52,48 +57,74 @@
     "E = MC^2",
     "8848m",
     "College Student's favourite time"];
-    function firstTime(){
+  var wrongLetter = "Wrong Guesses: ";
+  document.getElementById("guessedWord").innerHTML = String(wrongLetter);
+  function firstTime(){
       index = Math.floor(Math.random() * 5);
+      rightWord = [""];
       rightWord = wordbank[index];
       hintWord = hint[index];
-      temp = "";
+      temp = [""];
       for(i in rightWord)
       {
         temp += "-";
       }
       printWord = String(temp);
-      document.getElementById("rightWord").innerHTML = String(printWord);
-    }
+      document.getElementById("printToScreen").innerHTML = String(printWord);
+      document.getElementById("Lives").innerHTML = String(Lives) + " Tries Left";
+  }
+  function giveHint(){
+   document.getElementById("hint").innerHTML = String(hintWord);
+  }
 
   function processGuess(){
-    var guessLetter = document.getElementById("Letter").value;
+    if(Lives > -1) {
+    document.getElementById("Lives").innerHTML = String(Lives) + " Tries Left";
+    }
+    guessLetter = [""];
+    guessLetter = document.getElementById("Letter").value;
     String(guessLetter).replace(/\s/g, "");
+    guessLetter = String(guessLetter).toUpperCase();
     var letters = /^[A-Za-z]+$/;
     if (String(guessLetter).length === 1 && String(guessLetter).match(letters)){
-      if (String(rightWord).includes(String(guessLetter)))
+      if (rightWord.includes(guessLetter))
       {
-        document.getElementById("rightWord").innerHTML = String(printWord);
-
-        for (i in rightWord)
+        for  (i = 0; i < rightWord.length; i++)
         {
-          if(rightWord[i] == String(guessLetter))
+          if(guessLetter == rightWord[i])
           {
-            printWord[i] = String(guessLetter);
-            document.getElementById("rightWord").innerHTML = String(printWord);
+            printWord = printWord.substr(0, i) + guessLetter + printWord.substr(i + 1,rightWord.length -1);
           }
         }
+        document.getElementById("printToScreen").innerHTML = String(printWord);
       }
       else {
-
+      Lives--;
+      document.getElementById("Lives").innerHTML = String(Lives) + " Tries Left";
+      wrongLetter += guessLetter;
+      wrongLetter += ",";
+      if (Lives < 0)
+      {
+        document.getElementById("win").innerHTML = "All tries Gone! You Lose!";
       }
+      document.getElementById("guessedWord").innerHTML = String(wrongLetter);
+      }
+      document.getElementById("Letter").value = "";
     }
     else {
           window.alert("Please Input a Letter a-z");
           document.getElementById("Letter").value = "";
     }
-
-
-
-}
+    if( rightWord == printWord)
+    {
+      document.getElementById("win").innerHTML = "You Win!";
+      document.getElementById("Lives").innerHTML = " Reload Page to Play Again";
+    }
+    if (Lives == 0)
+    {
+      document.getElementById("win").innerHTML = "All tries Gone! You Lose!";
+      document.getElementById("Lives").innerHTML = " Reload Page to Play Again";
+    }
+  }
   </script>
 </html>
